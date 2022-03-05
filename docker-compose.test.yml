@@ -1,0 +1,35 @@
+version: "3.9"
+services:
+  db:
+    container_name: db_test
+    restart: always
+    build: ./db
+    volumes:
+      - ./db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: db
+    ports:
+      - "5432:5432"
+
+  app:
+    container_name: app_test
+    build: app
+    volumes:
+      - ./app/:/go/src/github.com/mr-yoyo/anti_bruteforce/app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db_test
+    command: ["/project/app", "http-server", "-c", "/project/config.test.yml"]
+
+  api:
+    container_name: api_test
+    build: it
+    volumes:
+      - ./it/:/go/src/github.com/mr-yoyo/anti_bruteforce/it
+    depends_on:
+      - db_test
+      - app_test
+    command: ["go", "test", "-v", "api_test.go"]

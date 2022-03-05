@@ -1,0 +1,16 @@
+http:
+  port: 8090
+
+db:
+  dataSource:
+    - "postgres://user:password@127.0.0.1:5432/db?sslmode=disable&binary_parameters=yes"
+  driver: postgres
+  maxOpenConns: 30
+  maxIdleConns: 30
+  connMaxLifetime: 1h
+
+policy: # per minute
+  same_login: 10
+  same_password: 100
+  same_ip: 1000
+

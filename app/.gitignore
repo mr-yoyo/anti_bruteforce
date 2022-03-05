@@ -1,0 +1,8 @@
+.idea
+.vscode
+bin/app
+vendor/
+*_gen.go
+*.iml
+.DS_Store
+coverage.out
